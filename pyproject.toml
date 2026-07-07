@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ejecucion-presupuestaria"
+version = "0.1.0"
+description = "Análisis Predictivo y Visualización Dinámica de la Ejecución Presupuestaria de las Entidades Locales en España (2018-2025)"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Eliesel Gómez Sánchez" },
+    { name = "Carlos A. Herrera Díaz" }
+]
+license = { text = "MIT" }
+keywords = ["open-data", "spain", "budget", "machine-learning", "data-lake", "prefect", "streamlit"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "flows*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "ARG"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_unused_ignores = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov=src --cov-report=term-missing"

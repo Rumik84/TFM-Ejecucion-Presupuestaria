@@ -1,0 +1,82 @@
+# ==========================================================
+# Data Lake (no versionar datos)
+# ==========================================================
+data_lake/00_raw/
+data_lake/01_staging/
+data_lake/02_curated/
+data_lake/03_features/
+data_lake/04_models/
+
+# Mantener la estructura de carpetas
+!data_lake/**/.gitkeep
+
+# Archivos de datos
+*.parquet
+*.db
+*.sqlite
+*.sqlite3
+
+# Si utilizas otros formatos
+*.csv
+*.xlsx
+*.xls
+*.feather
+*.orc
+
+# ==========================================================
+# Python
+# ==========================================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+*.egg-info/
+.eggs/
+
+.venv/
+venv/
+ENV/
+env/
+
+.env
+.env.*
+
+.ipynb_checkpoints/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.coverage
+.coverage.*
+
+htmlcov/
+
+dist/
+build/
+
+# ==========================================================
+# Logs
+# ==========================================================
+logs/
+*.log
+*.jsonl
+
+# ==========================================================
+# Prefect
+# ==========================================================
+.prefect/
+prefect.db
+
+# ==========================================================
+# IDE
+# ==========================================================
+.vscode/
+.idea/
+
+*.swp
+*.swo
+
+.DS_Store
+Thumbs.db

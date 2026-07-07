@@ -1,0 +1,53 @@
+# ============================================================
+#  Imagen: dashboard  (servicio web Streamlit — siempre activo)
+#  Uso local:   docker compose up dashboard
+#  Uso cloud:   ECS Service / Container Apps / App Runner
+# ============================================================
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgomp1 \
+    libxml2-dev \
+    libxslt1-dev \
+    build-essential \
+    libffi-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements-docker.txt .
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements-docker.txt
+
+COPY config/        config/
+COPY src/           src/
+COPY flows/         flows/
+COPY scripts/       scripts/
+
+ENV PYTHONPATH=/app
+ENV DATA_LAKE_ROOT=/data/data_lake
+ENV RAW_DIR=/data/data_lake/00_raw
+ENV STAGING_DIR=/data/data_lake/01_staging
+ENV CURATED_DIR=/data/data_lake/02_curated
+ENV FEATURES_DIR=/data/data_lake/03_features
+ENV MODELS_DIR=/data/data_lake/04_models
+ENV SQLITE_PATH=/data/data_lake/catalog.db
+ENV LOG_DIR=/data/logs
+ENV LOG_LEVEL=INFO
+ENV STREAMLIT_SERVER_PORT=8501
+ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0
+# Deshabilita telemetría de Streamlit en contenedor
+ENV STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+
+VOLUME ["/data/data_lake"]
+
+EXPOSE 8501
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+
+CMD ["streamlit", "run", "src/dashboard/app.py", \
+     "--server.address=0.0.0.0", \
+     "--server.port=8501", \
+     "--server.headless=true"]

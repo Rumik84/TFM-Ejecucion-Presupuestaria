@@ -1,0 +1,122 @@
+name: ejecucion-presupuestaria
+
+# =============================================================================
+#  Arquitectura local (espejo de la arquitectura cloud):
+#
+#   pipeline  ──► batch job: ingesta + ETL + feature eng + entrenamiento
+#   dashboard ──► servicio web: Streamlit en http://localhost:8501
+#
+#  Ambos comparten el volumen "data_lake" (equivale a S3 / Azure Data Lake en cloud).
+#
+#  Uso habitual:
+#    docker compose up dashboard              # solo dashboard (datos ya procesados)
+#    docker compose run --rm pipeline         # ejecutar pipeline completo
+#    docker compose run --rm pipeline --only ingest
+#    docker compose run --rm pipeline --only etl --ccaa aragon canarias
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  #  PIPELINE — job batch (no arranca con "up" a menos que se llame explícitamente)
+  # ---------------------------------------------------------------------------
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile.pipeline
+    image: ejecucion-presupuestaria/pipeline:latest
+    container_name: ep_pipeline
+    env_file:
+      - .env
+    environment:
+      DATA_LAKE_ROOT: /data/data_lake
+      RAW_DIR: /data/data_lake/00_raw
+      STAGING_DIR: /data/data_lake/01_staging
+      CURATED_DIR: /data/data_lake/02_curated
+      FEATURES_DIR: /data/data_lake/03_features
+      MODELS_DIR: /data/data_lake/04_models
+      SQLITE_PATH: /data/data_lake/catalog.db
+      LOG_DIR: /data/logs
+    volumes:
+      - data_lake:/data/data_lake
+      - logs:/data/logs
+    networks:
+      - ep_net
+    # Sin restart: el pipeline es un job puntual, no un servicio permanente
+    restart: "no"
+    # profiles evita que arranque con "docker compose up" sin argumentos
+    profiles: ["pipeline"]
+
+  # ---------------------------------------------------------------------------
+  #  VALIDATE — piloto de validación API + ETL (job puntual)
+  # ---------------------------------------------------------------------------
+  validate:
+    build:
+      context: .
+      dockerfile: Dockerfile.pipeline
+    image: ejecucion-presupuestaria/pipeline:latest
+    container_name: ep_validate
+    command: ["python", "scripts/pilot_validate.py", "--ccaa", "pais-vasco"]
+    env_file:
+      - .env
+    environment:
+      DATA_LAKE_ROOT: /data/data_lake
+      RAW_DIR: /data/data_lake/00_raw
+      STAGING_DIR: /data/data_lake/01_staging
+      CURATED_DIR: /data/data_lake/02_curated
+      FEATURES_DIR: /data/data_lake/03_features
+      MODELS_DIR: /data/data_lake/04_models
+      SQLITE_PATH: /data/data_lake/catalog.db
+      LOG_DIR: /data/logs
+    volumes:
+      - data_lake:/data/data_lake
+      - logs:/data/logs
+    networks:
+      - ep_net
+    restart: "no"
+    profiles: ["validate"]
+
+  # ---------------------------------------------------------------------------
+  #  DASHBOARD — servicio web permanente
+  # ---------------------------------------------------------------------------
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    image: ejecucion-presupuestaria/dashboard:latest
+    container_name: ep_dashboard
+    env_file:
+      - .env
+    environment:
+      DATA_LAKE_ROOT: /data/data_lake
+      SQLITE_PATH: /data/data_lake/catalog.db
+      STREAMLIT_SERVER_PORT: "8501"
+      STREAMLIT_SERVER_ADDRESS: "0.0.0.0"
+    volumes:
+      - data_lake:/data/data_lake:ro   # solo lectura — el dashboard no escribe datos
+    ports:
+      - "8501:8501"
+    networks:
+      - ep_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+# =============================================================================
+#  Volúmenes nombrados — en cloud se sustituyen por:
+#    AWS:   S3 bucket + EFS mount (si hace falta)
+#    Azure: Azure Data Lake Storage Gen2 + Azure Files
+# =============================================================================
+volumes:
+  data_lake:
+    driver: local
+  logs:
+    driver: local
+
+networks:
+  ep_net:
+    driver: bridge

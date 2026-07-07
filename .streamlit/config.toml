@@ -1,0 +1,15 @@
+# Configuración de Streamlit para Azure App Service (Linux).
+# En local no molesta: puedes seguir lanzando `streamlit run src/dashboard/app.py`.
+[server]
+headless = true            # sin abrir navegador ni pedir email en el arranque
+address = "0.0.0.0"        # escuchar en todas las interfaces (necesario en el contenedor)
+port = 8000               # App Service enruta al puerto 8000 (ver WEBSITES_PORT)
+enableCORS = false         # detrás del proxy de App Service
+enableXsrfProtection = false
+fileWatcherType = "none"   # sin watcher en producción (ahorra CPU/RAM en F1)
+
+[browser]
+gatherUsageStats = false   # no enviar telemetría a Streamlit
+
+[theme]
+base = "light"

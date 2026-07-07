@@ -1,0 +1,25 @@
+# ---------------------------------------------------------------------------
+# Dependencias MÍNIMAS para el dashboard Streamlit en Azure App Service.
+# Solo el runtime del servidor web, que lee el feature store desde PostgreSQL.
+# NO incluye ETL, ML (xgboost/lightgbm/shap), Prefect ni herramientas de dev.
+# Versiones alineadas con el entorno local verificado (evitan sorpresas de API,
+# p. ej. `width='stretch'` requiere Streamlit >= 1.50).
+# ---------------------------------------------------------------------------
+
+# --- Web / visualización ---
+streamlit>=1.56,<2
+plotly>=6.7,<7
+
+# --- Datos ---
+pandas>=3.0,<3.1
+numpy>=2.4,<3
+
+# --- Acceso a PostgreSQL (Azure) ---
+sqlalchemy>=2.0.35,<2.1
+psycopg[binary]>=3.3,<4       # driver del dialecto postgresql+psycopg
+
+# --- Configuración (config.settings) ---
+pydantic>=2.11,<3
+pydantic-settings>=2.9,<3
+pyyaml>=6.0
+python-dotenv>=1.0

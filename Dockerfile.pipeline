@@ -1,0 +1,58 @@
+# ============================================================
+#  Imagen: pipeline  (batch job — ingesta + ETL + ML)
+#  Uso local:   docker compose run --rm pipeline
+#  Uso cloud:   ECS Scheduled Task / ACI Job / Cloud Run Job
+# ============================================================
+FROM python:3.11-slim
+
+# Dependencias de sistema:
+#   libgomp1     → LightGBM (OpenMP)
+#   libxml2/xslt → lxml
+#   build-essential + libffi → wheels que compilan en install time
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgomp1 \
+    libxml2-dev \
+    libxslt1-dev \
+    build-essential \
+    libffi-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Instalar dependencias antes de copiar código (mejor uso de cache)
+COPY requirements-docker.txt .
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements-docker.txt
+
+# Copiar código fuente
+COPY config/   config/
+COPY src/      src/
+COPY flows/    flows/
+COPY scripts/  scripts/
+
+# PYTHONPATH para que los imports relativos funcionen igual que en local
+ENV PYTHONPATH=/app
+# Paths del data lake apuntan al volumen montado
+ENV DATA_LAKE_ROOT=/data/data_lake
+ENV RAW_DIR=/data/data_lake/00_raw
+ENV STAGING_DIR=/data/data_lake/01_staging
+ENV CURATED_DIR=/data/data_lake/02_curated
+ENV FEATURES_DIR=/data/data_lake/03_features
+ENV MODELS_DIR=/data/data_lake/04_models
+ENV SQLITE_PATH=/data/data_lake/catalog.db
+ENV LOG_DIR=/data/logs
+ENV LOG_LEVEL=INFO
+
+# El volumen /data se comparte con el contenedor dashboard
+VOLUME ["/data/data_lake", "/data/logs"]
+
+# Entrypoint: inicializa la BD en el primer arranque, luego corre el pipeline
+COPY docker/pipeline-entrypoint.sh /entrypoint.sh
+# Fix CRLF → LF (el archivo se crea en Windows y bash en Linux no acepta \r)
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Argumentos por defecto: pipeline completo sobre todas las CCAA
+# Se pueden sobreescribir: docker compose run pipeline --only ingest --ccaa aragon
+CMD ["--ccaa", "all"]

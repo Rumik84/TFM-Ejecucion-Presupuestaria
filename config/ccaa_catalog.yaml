@@ -1,0 +1,182 @@
+# ============================================================================
+#  Catálogo de Comunidades Autónomas (CCAA) y Ciudades Autónomas de España
+#
+#  Cada entrada define:
+#    - slug: identificador interno usado en rutas de carpetas del data lake
+#    - nombre: nombre oficial
+#    - uri_nti: identificador URI NTI usado en la API datos.gob.es para
+#      filtrar por /catalog/dataset/spatial/Autonomia/{uri_nti}
+#    - cobertura: "muy_alta" | "alta" | "media" | "baja" | "sin_datos"
+#                 según el inventario base (ver Resumen_datasets_datos_gob_es.md)
+#    - publishers: IDs DIR3 de publicadores clave con datos presupuestarios
+# ============================================================================
+ccaa:
+  - slug: andalucia
+    nombre: Andalucía
+    uri_nti: Andalucia
+    cobertura: baja
+    publishers: []
+
+  - slug: aragon
+    nombre: Aragón
+    uri_nti: Aragon
+    cobertura: alta
+    publishers:
+      - A02002834   # Gobierno de Aragón - municipios
+    datasets_clave:
+      - a02002834-presupuesto-y-ejecucion-presupuestaria-de-municipios-de-aragon
+
+  - slug: asturias
+    nombre: Principado de Asturias
+    uri_nti: Principado-Asturias
+    cobertura: media
+    publishers: []
+
+  - slug: illes-balears
+    nombre: Illes Balears
+    uri_nti: Illes-Balears
+    cobertura: baja
+    publishers:
+      - A04003003   # CAIB
+    datasets_clave:
+      - a04003003-partidas-presupuesto-inicial-gastos-2022-2023-comunidad-autonoma-de-las-illes-balears1
+
+  - slug: canarias
+    nombre: Canarias
+    uri_nti: Canarias
+    cobertura: alta
+    publishers:
+      - A05003423   # ISTAC - EELL Canarias (48 datasets relevantes)
+    datasets_clave:
+      - a05003423-liquidacion-del-presupuesto-consolidado-de-gastos-de-las-entidades-locales-segun-estructura-funcional-capitulos-de-la-estructura-economica-y-fases-presupuestarias-islas-y-municipios-de-canarias-por-anos
+
+  - slug: cantabria
+    nombre: Cantabria
+    uri_nti: Cantabria
+    cobertura: alta
+    publishers: []
+
+  - slug: castilla-la-mancha
+    nombre: Castilla-La Mancha
+    uri_nti: Castilla-La-Mancha
+    cobertura: baja
+    publishers:
+      - A13002908
+    datasets_clave:
+      - a13002908-presupuestos-liquidados-gastos-consolidados-por-capitulos-y-fases-de-ejecucion-obligaciones-reconocidas
+
+  - slug: castilla-y-leon
+    nombre: Castilla y León
+    uri_nti: Castilla-Leon
+    cobertura: media
+    publishers:
+      - A07002862
+    datasets_clave:
+      - a07002862-ejecucion-del-presupuesto-de-la-administracion-de-la-comunidad-gastos1
+
+  - slug: cataluna
+    nombre: Cataluña
+    uri_nti: Cataluna
+    cobertura: media
+    publishers:
+      - A10002983   # Generalitat (histórico; sin distribuciones descargadas)
+      - A09002970   # Generalitat de Catalunya — ejecución mensual (Socrata transparenciacatalunya)
+    datasets_clave:
+      - a10002983-ejecucion-presupuestaria-de-la-generalitat-y-sus-organismos-autonomos-2025
+      - a09002970-ejecucion-mensual-del-presupuesto-de-la-generalitat-de-catalunya-gastos
+      - l01080193-presupuestos-consolidados-de-la-ciudad-de-barcelona-iniciales-segun-lgep-y-loepsf
+
+  - slug: comunidad-valenciana
+    nombre: Comunitat Valenciana
+    uri_nti: Comunidad-Valenciana
+    cobertura: baja
+    publishers: []
+
+  - slug: extremadura
+    nombre: Extremadura
+    uri_nti: Extremadura
+    cobertura: baja
+    publishers: []
+
+  - slug: galicia
+    nombre: Galicia
+    uri_nti: Galicia
+    cobertura: media
+    publishers:
+      - A12002994   # Xunta
+    datasets_clave:
+      - a12002994-gastos-del-presupuesto-20201
+
+  - slug: madrid
+    nombre: Comunidad de Madrid
+    uri_nti: Comunidad-Madrid
+    cobertura: media
+    publishers: []
+    datasets_clave:
+      - l01280066-presupuestos-20221             # Ayto. Madrid
+      - l01280148-presupuesto-municipal-2016     # Alcobendas
+      - l01281150-datos-economico-financieros    # Coslada
+      - l01280796-presupuestos-ejecucion-anual-historico  # San Sebastián de los Reyes
+
+  - slug: murcia
+    nombre: Región de Murcia
+    uri_nti: Region-Murcia
+    cobertura: media
+    publishers:
+      - A14002961   # CARM - presupuestos regionales
+    datasets_clave:
+      - l01300243-ejecucion-del-presupuesto-de-gastos-para-el-1er-trimestre-de-2018
+      - a14002961-estructura-economica-del-presupuesto-2023-de-la-carm
+
+  - slug: navarra
+    nombre: Comunidad Foral de Navarra
+    uri_nti: Comunidad-Foral-Navarra
+    cobertura: baja
+    publishers: []
+    datasets_clave:
+      - l01312016-ayto-de-pamplona-ejecucion-del-presupuesto-de-gastos-2016
+
+  - slug: pais-vasco
+    nombre: País Vasco
+    uri_nti: Pais-Vasco
+    cobertura: muy_alta
+    publishers:
+      - A16003011   # Eustat - 51 datasets
+      - L02000020   # Agregador Entidades Locales País Vasco - 141 datasets
+    datasets_clave:
+      - a16003011-ejecucion-presupuestaria-de-las-diputaciones-forales-evolucion-de-la-ejecucion-del-presupuesto-de-gastos-obligaciones-reconocidas-miles-de-euros
+      - l01010590-presupuestos-ejecucion-presupuestaria-2025   # Vitoria-Gasteiz
+      - l02000020-datos-de-la-liquidacion-del-presupuesto-ayuntamiento-de-antzuola
+
+  - slug: la-rioja
+    nombre: La Rioja
+    uri_nti: La-Rioja
+    cobertura: sin_datos
+    publishers: []
+
+  - slug: ceuta
+    nombre: Ceuta
+    uri_nti: Ciudad-Ceuta
+    cobertura: sin_datos
+    publishers: []
+
+  - slug: melilla
+    nombre: Melilla
+    uri_nti: Ciudad-Melilla
+    cobertura: sin_datos
+    publishers: []
+
+  # ------- Nodo agregado nacional (no es una CCAA, pero canaliza los datasets
+  #         MINHAP / Administración Central que afectan a todas las CCAA) -------
+  - slug: nacional
+    nombre: Administración General del Estado
+    uri_nti: Pais/España
+    cobertura: muy_alta
+    publishers:
+      - E05250001   # MINHAP - liquidación presupuestos CCAA
+      - E05073401   # Admin Central - obligaciones reconocidas netas
+      - I00000061   # Senado
+    datasets_clave:
+      - e05250001-liquidacion-de-presupuestos-de-las-comunidades-y-ciudades-autonomas-base-de-datos
+      - e05073401-presupuesto-inicial-credito-definitivo-del-presupuesto-de-gasto-y-obligaciones-reconocidas-netas
+      - i00000061-estado-de-ejecucion-del-presupuesto-del-senado

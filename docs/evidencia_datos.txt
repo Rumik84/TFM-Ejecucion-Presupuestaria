@@ -1,0 +1,54 @@
+
+========================================================================
+ 1. VOLUMEN POR CCAA
+========================================================================
+         ccaa_slug   filas  anio_min  anio_max  anios_con_dato
+            aragon 4151802      2012      2024              13
+          canarias 3146954      2010      2019              10
+          asturias  891381      2014      2025              12
+castilla-la-mancha  375494      1985      2025              41
+          nacional  334084      2015      2023               8
+            madrid  298796      2011      2026              16
+
+TOTAL filas curadas: 9,198,511
+
+========================================================================
+ 2. FASES PRESUPUESTARIAS POR CCAA (pivote)
+========================================================================
+fase                 ARN     CRE      OBR     PAG      PRE
+ccaa_slug                                                 
+aragon                 0  926397   941052  886698  1397655
+asturias               0  168146   168146  252219   302870
+canarias               0  247648  1040332  783785  1075189
+castilla-la-mancha  3938       0     2186    2196   367174
+madrid                 0  144310     5080    4556   144850
+nacional               0       0        0       0   334084
+
+Leyenda: PRE=Presupuesto inicial, CRE=Credito definitivo,
+         ARN=Autorizacion, OBR=Obligacion reconocida, PAG=Pago.
+
+========================================================================
+ 3. NULOS EN entidad_id Y trimestre (por CCAA)
+========================================================================
+         ccaa_slug   filas  pct_null_entidad  pct_null_trimestre
+            aragon 4151802             100.0               100.0
+          asturias  891381             100.0               100.0
+          canarias 3146954               0.0               100.0
+castilla-la-mancha  375494             100.0               100.0
+            madrid  298796             100.0               100.0
+          nacional  334084             100.0               100.0
+
+========================================================================
+ 4. HETEROGENEIDAD DE FORMATOS (catalog_distribution)
+========================================================================
+formato  n_distribuciones  descargadas
+    CSV              1697         1697
+   XLSX               815          815
+   JSON               725          725
+    XML               575          575
+    TSV               563          563
+    XLS               142          142
+PC-AXIS                11           11
+    RDF                 6            6
+
+TOTAL distribuciones en catalogo: 4,534

@@ -1,0 +1,53 @@
+﻿{
+  "required": [
+    "brecha_eur",
+    "brecha_pct",
+    "ejecutado_pct",
+    "obr_lag_1",
+    "obr_lag_2",
+    "obr_lag_3",
+    "obr_lag_4",
+    "q_sin",
+    "q_cos"
+  ],
+  "results": [
+    {
+      "ccaa": "aragon",
+      "rows": 8157,
+      "combos": 125,
+      "anios": "2012-2024",
+      "n_cols": 23,
+      "missing_features": [],
+      "ok": true
+    },
+    {
+      "ccaa": "asturias",
+      "rows": 12,
+      "combos": 12,
+      "anios": "2014-2025",
+      "n_cols": 23,
+      "missing_features": [],
+      "ok": true
+    },
+    {
+      "ccaa": "castilla-la-mancha",
+      "rows": 41,
+      "combos": 41,
+      "anios": "1985-2025",
+      "n_cols": 21,
+      "missing_features": [
+        "ejecutado_pct"
+      ],
+      "ok": false
+    },
+    {
+      "ccaa": "madrid",
+      "rows": 94,
+      "combos": 94,
+      "anios": "2011-2026",
+      "n_cols": 23,
+      "missing_features": [],
+      "ok": true
+    }
+  ]
+}

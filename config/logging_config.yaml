@@ -1,0 +1,38 @@
+# Configuración dictConfig de logging (Python logging)
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  simple:
+    format: "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+  jsonline:
+    format: '{"ts": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "msg": "%(message)s"}'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: simple
+    filename: logs/pipeline.log
+    maxBytes: 10485760    # 10 MB
+    backupCount: 5
+    encoding: utf-8
+
+root:
+  level: DEBUG
+  handlers: [console, file]
+
+loggers:
+  urllib3:
+    level: WARNING
+  requests:
+    level: WARNING
+  prefect:
+    level: INFO

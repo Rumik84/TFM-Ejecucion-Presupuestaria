@@ -1,0 +1,47 @@
+# Control de versiones
+.git/
+.gitignore
+
+# Entorno virtual local
+.venv/
+venv/
+env/
+
+# Cache de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Cache de herramientas
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# Data lake local (se monta como volumen en Docker)
+data_lake/
+logs/
+
+# Secretos y configuración local
+.env
+*.db
+
+# Notebooks y artefactos de desarrollo
+notebooks/
+*.ipynb
+
+# Documentación y archivos de análisis
+*.md
+*.xlsx
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
