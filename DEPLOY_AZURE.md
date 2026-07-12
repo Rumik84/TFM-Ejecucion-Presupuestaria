@@ -36,7 +36,7 @@ Variables que usaremos:
 ./deploy.ps1        # genera deploy.zip (~0.1 MB) con src/, config/, .streamlit/, requirements.txt
 ```
 
-## 2. Crear el servidor web (empieza GRATIS con F1)
+## 2. Crear el servidor web (Implementamos servidor F1)
 
 ```bash
 az appservice plan create -n plan-tfm -g rg-tfm --sku F1 --is-linux
@@ -61,7 +61,7 @@ az webapp config appsettings set -g rg-tfm -n tfm-dashboard --settings \
   SCM_DO_BUILD_DURING_DEPLOYMENT=true
 ```
 
-## 4. Comando de arranque + WebSockets (Streamlit los necesita)
+## 4. Comando de arranque + WebSockets (Necesario paraStreamlit)
 
 ```bash
 az webapp config set -g rg-tfm -n tfm-dashboard --web-sockets-enabled true \
@@ -100,8 +100,4 @@ az webapp log tail -g rg-tfm -n tfm-dashboard     # logs en vivo (Ctrl+C para sa
 - **Borrar solo el web server** (los datos en Postgres quedan intactos):
   `az webapp delete -g rg-tfm -n tfm-dashboard`
 
-## Seguridad
 
-- **Rota la contraseña** de Postgres (se compartió en chat) y ponla SOLO como App Setting
-  `PGPASSWORD` (o, mejor, en Azure Key Vault con referencia).
-- Nunca la incluyas en `deploy.zip`, en el código ni en el repositorio.
