@@ -173,6 +173,4 @@ GET https://datos.gob.es/apidata/nti/public-sector
 
 ---
 
-**Entregable acompañante:** `Inventario_datasets_datos_gob_es.xlsx` (6 hojas) con el
-detalle completo: resumen, CCAA, publicadores, datasets destacados, endpoints API y el
-pipeline TFM propuesto.
+
