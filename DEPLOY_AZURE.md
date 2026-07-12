@@ -18,11 +18,11 @@ az login
 az account set --subscription "<tu-suscripción-Azure-for-Students>"
 ```
 
-Variables que usaremos (ajusta a tus nombres reales):
+Variables que usaremos:
 
 | Variable        | Valor de ejemplo                                  |
 |-----------------|---------------------------------------------------|
-| Grupo recursos  | `rg-tfm` (el de tu Postgres)                       |
+| Grupo recursos  | `rg-tfm` (el valor en postgres)                       |
 | App Service     | `tfm-dashboard` (debe ser único en azurewebsites) |
 | Plan            | `plan-tfm`                                         |
 | Postgres host   | `postgres-tfm.postgres.database.azure.com`        |
