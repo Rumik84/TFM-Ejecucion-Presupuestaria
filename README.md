@@ -15,7 +15,7 @@ Objetivo: detectar tempranamente la brecha entre el presupuesto aprobado y el ga
 
 ## 2. Arquitectura
 
-```
+``
 API datos.gob.es ──► INGESTA ──► 00_raw ──► ETL ──► 01_staging ──► CURADO ──► 02_curated (Parquet + SQLite)
                                                                          │
                                                                          ├──► 03_features ──► MODELING ──► 04_models
