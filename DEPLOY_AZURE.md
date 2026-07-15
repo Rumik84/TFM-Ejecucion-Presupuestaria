@@ -6,8 +6,8 @@ Arquitectura: **dos recursos separados**.
 App Service (Linux, corre Streamlit)  ──SSL:5432──►  PostgreSQL Flexible Server (feature store, YA existe)
 ```
 
-El App Service solo ejecuta el código; los datos siguen en tu Postgres. Toda la
-configuración va por **variables de entorno (App Settings)**, nunca en el código.
+El App Service solo ejecuta el código; los datos se encuentran en el server Postgres. Toda la
+configuración va por **variables de entorno (App Settings)**.
 
 ---
 
@@ -15,7 +15,7 @@ configuración va por **variables de entorno (App Settings)**, nunca en el códi
 
 ```bash
 az login
-az account set --subscription "<tu-suscripción-Azure-for-Students>"
+az account set --subscription "<suscripción-Azure-for-Students>"
 ```
 
 Variables que usaremos:
@@ -26,7 +26,7 @@ Variables que usaremos:
 | App Service     | `tfm-dashboard` (debe ser único en azurewebsites) |
 | Plan            | `plan-tfm`                                         |
 | Postgres host   | `postgres-tfm.postgres.database.azure.com`        |
-| Región          | `westeurope` (misma que tu Postgres)              |
+| Región          | `westeurope` (misma que en Postgres)              |
 
 ---
 
@@ -43,7 +43,7 @@ az appservice plan create -n plan-tfm -g rg-tfm --sku F1 --is-linux
 az webapp create -g rg-tfm -p plan-tfm -n tfm-dashboard --runtime "PYTHON:3.12"
 ```
 
-> Para la defensa, sube a B1 (~13 USD/mes, sin arranques en frío):
+> sube a B1 (~13 USD/mes):
 > `az appservice plan update -g rg-tfm -n plan-tfm --sku B1`
 > Al terminar, baja a F1 o borra el plan para dejar de pagar.
 
@@ -56,7 +56,7 @@ az webapp config appsettings set -g rg-tfm -n tfm-dashboard --settings \
   PGUSER=adminuser \
   PGDATABASE=postgres \
   PGSSLMODE=require \
-  PGPASSWORD='<PASSWORD_ROTADA>' \
+  PGPASSWORD='<PASSWORD_>' \
   WEBSITES_PORT=8000 \
   SCM_DO_BUILD_DURING_DEPLOYMENT=true
 ```
